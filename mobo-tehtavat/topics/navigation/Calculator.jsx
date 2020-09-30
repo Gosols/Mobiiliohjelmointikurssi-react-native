@@ -26,29 +26,28 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Calculator() {
+export default function Calculator({ navigation }) {
   const [first, setFirst] = React.useState();
   const [second, setSecond] = React.useState();
   const [result, setResult] = React.useState();
-  let [history, setHistory] = React.useState([]);
+  const [history, setHistory] = React.useState([]);
 
   const addition = () => {
-    setResult(parseInt(first) + parseInt(second));
-    history.push(
-      `${first} + ${second} = ${parseInt(first) + parseInt(second)}`
-    );
+    const sum = parseInt(first) + parseInt(second);
+
+    setResult(sum);
+    history.push(`${first} + ${second} = ${sum}`);
   };
 
   const subtraction = () => {
-    setResult(parseInt(first) - parseInt(second));
-    history.push(
-      `${first} - ${second} = ${parseInt(first) - parseInt(second)}`
-    );
+    const sub = parseInt(first) - parseInt(second);
+
+    setResult(sub);
+    history.push(`${first} - ${second} = ${sub}`);
   };
 
   return (
     <View style={{ alignItems: "center" }}>
-      <Text>Calculator</Text>
       <View style={styles.component}>
         <Text>Result: {result}</Text>
         <TextInput
@@ -68,25 +67,15 @@ export default function Calculator() {
           textAlign="center"
         />
         <View style={styles.buttons}>
-          <Button
-            color="black"
-            style={styles.button}
-            title="Plus"
-            onPress={addition}
-          />
-          <Button
-            color="black"
-            style={styles.button}
-            title="Minus"
-            onPress={subtraction}
-          />
+          <Button color="black" title="Plus" onPress={addition} />
+          <Button color="black" title="Minus" onPress={subtraction} />
         </View>
-        <View>
-          <Text>History</Text>
-          {history.map((item, i) => {
-            return <Text key={i}>{item}</Text>;
-          })}
-        </View>
+        <Button
+          title="History"
+          onPress={() => {
+            navigation.navigate("History", { history: history });
+          }}
+        />
       </View>
     </View>
   );
